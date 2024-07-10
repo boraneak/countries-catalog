@@ -1,11 +1,10 @@
 import React from "react";
-import { Button } from "antd";
 import "./App.css";
-
+import Catalog from "./components/Catalog/Catalog";
 const App: React.FC = () => (
   <div className="App">
     <header className="App-header">
-      <Button type="primary">Button</Button>
+      <Catalog />
     </header>
   </div>
 );
