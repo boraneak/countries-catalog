@@ -5,12 +5,14 @@ import CountryCard from "./CountryCard";
 import CountryModal from "./CountryModal";
 import Search from "./Search";
 import Fuse from "fuse.js";
+import Pagination from "./Pagination";
 
 const Catalog: React.FC = () => {
   const [countries, setCountries] = useState<Country[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-  const [filteredCountries, setFilteredCountries] = useState<Country[]>([]); // State for filtered countries
-
+  const [filteredCountries, setFilteredCountries] = useState<Country[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize] = useState<number>(25);
   useEffect(() => {
     const loadCountries = async () => {
       try {
@@ -53,28 +55,42 @@ const Catalog: React.FC = () => {
     const filtered = result.map((item) => item.item);
 
     setFilteredCountries(filtered);
+    // Reset to first page after search
+    setCurrentPage(1);
+  };
+  // Pagination logic for displaying countries
+  const getDisplayedCountries = () => {
+    const data = filteredCountries.length > 0 ? filteredCountries : countries;
+    const startIndex = (currentPage - 1) * pageSize;
+    return data.slice(startIndex, startIndex + pageSize);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
     <>
       <Search onSearch={handleSearch} />
       <div>
-        {filteredCountries.length > 0
-          ? filteredCountries.map((country) => (
-              <CountryCard
-                key={country.cca3}
-                country={country}
-                onClick={handleCountryClick}
-              />
-            ))
-          : countries.map((country) => (
-              <CountryCard
-                key={country.cca3}
-                country={country}
-                onClick={handleCountryClick}
-              />
-            ))}
+        {getDisplayedCountries().map((country) => (
+          <CountryCard
+            key={country.cca3}
+            country={country}
+            onClick={handleCountryClick}
+          />
+        ))}
       </div>
+      <Pagination
+        totalItems={
+          filteredCountries.length > 0
+            ? filteredCountries.length
+            : countries.length
+        }
+        pageSize={pageSize}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      />
       {selectedCountry && (
         <CountryModal
           country={selectedCountry}

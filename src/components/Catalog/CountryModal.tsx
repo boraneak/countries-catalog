@@ -105,7 +105,12 @@ const CountryModal: React.FC<CountryModalProps> = ({
       <p>{`Latitude: ${country.capitalInfo.latlng[0]}, Longitude: ${country.capitalInfo.latlng[1]}`}</p>
 
       <h3>Postal Code:</h3>
-      <p>{`Format: ${country.postalCode.format}, Regex: ${country.postalCode.regex}`}</p>
+      {country.postalCode && (
+        <>
+          <p>{`Format: ${country.postalCode.format}`}</p>
+          <p>{`Regex: ${country.postalCode.regex}`}</p>
+        </>
+      )}
     </Modal>
   );
 };
