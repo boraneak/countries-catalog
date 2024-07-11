@@ -6,6 +6,7 @@ import CountryModal from "./CountryModal";
 import Search from "./Search";
 import Fuse from "fuse.js";
 import Pagination from "./Pagination";
+import SortToggle from "./SortToggle";
 
 const Catalog: React.FC = () => {
   const [countries, setCountries] = useState<Country[]>([]);
@@ -13,6 +14,8 @@ const Catalog: React.FC = () => {
   const [filteredCountries, setFilteredCountries] = useState<Country[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize] = useState<number>(25);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
   useEffect(() => {
     const loadCountries = async () => {
       try {
@@ -61,17 +64,25 @@ const Catalog: React.FC = () => {
   // Pagination logic for displaying countries
   const getDisplayedCountries = () => {
     const data = filteredCountries.length > 0 ? filteredCountries : countries;
+    const sortedData = data.sort((a, b) =>
+      sortOrder === "asc"
+        ? a.name.common.localeCompare(b.name.common)
+        : b.name.common.localeCompare(a.name.common)
+    );
     const startIndex = (currentPage - 1) * pageSize;
-    return data.slice(startIndex, startIndex + pageSize);
+    return sortedData.slice(startIndex, startIndex + pageSize);
   };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
+  const handleSortChange = (order: "asc" | "desc") => {
+    setSortOrder(order);
+  };
   return (
     <>
       <Search onSearch={handleSearch} />
+      <SortToggle onSortChange={handleSortChange} />
       <div>
         {getDisplayedCountries().map((country) => (
           <CountryCard
