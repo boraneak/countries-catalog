@@ -5,6 +5,15 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Search by Country Name (Fuzzy Search)
 - Sorting by Country Name (Asc, Desc)
 - Pagination (25 rows per page)
+- Display the following fields in the catalog:
+  - Flags (using png file within `flags` property)
+  - Country Name (`name.official`)
+  - 2 character Country Code (`cca2`)
+  - 3 character Country Code (`cca3`)
+  - Native Country Name (`name.nativeName`)
+  - Alternative Country Name (`altSpellings`)
+  - Country Calling Codes (`idd`)
+- After clicking on a country name, a modal pops up to show all other information
 
 ## Available Scripts
 
@@ -42,4 +51,3 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However, we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
